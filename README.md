@@ -6,6 +6,11 @@ O objetivo deste projeto é criar um sistema distribuído e escalável para elei
 contendo aplicações responsáveis para votação, gerenciamento de eleição, 
 e consulta de resultados utilizando Java, Docker, MariaDB, Quarkus e Arquitetura Limpa.
 
+Este projeto conta com 3 módulos:
+- [Election Management]
+- [Voting App]
+- [Result App]
+
 Projeto de laboratório da [dio.me] com o especialista [Thiago Poiani]
 
 ## 📜 Tecnologias
@@ -34,10 +39,30 @@ Projeto de laboratório da [dio.me] com o especialista [Thiago Poiani]
   - [MongoDB]
   - [Jaeger Tracing]
 
+## 🎯 Aplicações
+
+### ⚙ Election Management
+
+A aplicação Election Management encontra-se na pasta `election-management`.  
+Readme do [Election Management]
+
+
+### 📥 Voting App
+
+A aplicação Voting App encontra-se na pasta `voting-app`.  
+Readme do [Voting App]
+
+### 🧾 Result App
+
+A aplicação Result App encontra-se na pasta `result-app`.  
+Readme do [Result App]
+
+
 ## 👨‍💻 Iniciar as aplicações deste projeto
 
-### Docker Compose
+### 📦 Docker Compose
 Antes de inicar os módulos, é importante subir os containers e executar XXXX, seguem abaixo os comandos a serem executados:
+As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml].
 
 ```shell
 docker compose up -d reverse-proxy
@@ -48,8 +73,9 @@ curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW
 docker compose up -d caching database
 ```
 
-### CI/CD Build
+### 🛠 CI/CD Build
 Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação, abaixo existe os comandos para build das três aplicações:
+O script para CI/CD Build está no arquivo [cicd-build.sh]
 
 ```shell
 ./cicd-build.sh election-management
@@ -57,9 +83,9 @@ Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação
 ./cicd-build.sh result-app
 ```
 
-### CI/CD Blue Green Deployment
+### 🤖 CI/CD Blue Green Deployment
 Com o comando para CI/CD Build, o script já cria a imagem do docker com a versão como TAG. Para realizar um blue green deployment, utilize os comandos abaixo conforme a aplicação:
-
+O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-deployment.sh]
 ```shell
 ./cicd-blue-green-deployment.sh election-management 1.0.0
 ./cicd-blue-green-deployment.sh voting-app 1.0.0
@@ -87,3 +113,12 @@ _Lembre-se de revisar a versão (TAG) que vem após o nome da aplicação._
 [Testcontainers]: https://testcontainers.com/
 [Hibernate]: https://hibernate.org/
 [Flyway]: https://flywaydb.org/
+
+[Election Management]: https://github.com/didifive/lab-quarkus/blob/main/election-management/README.md
+[Voting App]: https://github.com/didifive/lab-quarkus/blob/main/voting-app/README.md
+[Result App]: https://github.com/didifive/lab-quarkus/blob/main/result-app/README.md
+
+[docker-compose.yml]: https://github.com/didifive/lab-quarkus/blob/main/docker-compose.yml
+[common.yml]: https://github.com/didifive/lab-quarkus/blob/main/common.yml
+[cicd-build.sh]: https://github.com/didifive/lab-quarkus/blob/main/cicd-build.sh
+[cicd-blue-green-deployment.sh]: https://github.com/didifive/lab-quarkus/blob/main/cicd-blue-green-deployment.sh
