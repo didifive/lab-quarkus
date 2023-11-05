@@ -58,13 +58,16 @@ Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação
 ```
 
 ### CI/CD Blue Green Deployment
-Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação, abaixo existe os comandos para build das três aplicações:
+Com o comando para CI/CD Build, o script já cria a imagem do docker com a versão como TAG. Para realizar um blue green deployment, utilize os comandos abaixo conforme a aplicação:
 
 ```shell
-./cicd-blue-green-deployment.sh election-management
-./cicd-blue-green-deployment.sh voting-app
-./cicd-blue-green-deployment.sh result-app
+./cicd-blue-green-deployment.sh election-management 1.0.0
+./cicd-blue-green-deployment.sh voting-app 1.0.0
+./cicd-blue-green-deployment.sh result-app 1.0.0
 ```
+
+_Lembre-se de revisar a versão (TAG) que vem após o nome da aplicação._ 
+
 
 
 [dio.me]: https://www.dio.me/
