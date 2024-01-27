@@ -4,7 +4,7 @@
 
 O objetivo deste projeto é criar um sistema distribuído e escalável para eleições, 
 contendo aplicações responsáveis para votação, gerenciamento de eleição, 
-e consulta de resultados utilizando Java, Docker, MariaDB, Quarkus e Arquitetura Limpa.
+e consulta de resultados utilizando Java, Docker, MariaDB, Quarkus e Arquitetura Cebola.
 
 Este projeto conta com 3 módulos:
 - [Election Management]
