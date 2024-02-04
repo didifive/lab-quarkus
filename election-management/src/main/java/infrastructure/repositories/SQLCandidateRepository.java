@@ -6,7 +6,6 @@ import domain.CandidateRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class SQLCandidateRepository implements CandidateRepository {
