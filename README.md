@@ -39,6 +39,16 @@ Projeto de laboratório da [dio.me] com o especialista [Thiago Poiani]
   - [MongoDB]
   - [Jaeger Tracing]
 
+## 🛠️ Mudanças e Atualizações
+
+Algumas mudanças e atualizações que fiz em relação com o projeto original:
+
+- No arquivo [cicd-build.sh] foi adicionado comando para fazer com que o script atualize a
+versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
+o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
+- **_TODO: Utilizar Vault para remover secrets que estão explícitas no docker compose._**
+
+
 ## 🎯 Aplicações
 
 ### ⚙ Election Management
@@ -58,22 +68,30 @@ A aplicação Result App encontra-se na pasta `result-app`.
 Readme do [Result App]
 
 
-## 👨‍💻 Iniciar as aplicações deste projeto
+## 🚀 Iniciando as aplicações
 
 ### 📦 Docker Compose
-Antes de inicar os módulos, é importante subir os containers e executar XXXX, seguem abaixo os comandos a serem executados:
-As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml].
+Para iniciar as aplicações, antes é importante subir primeira os containers abaixo para montar a infraestrutura, seguem abaixo os comandos a serem executados:
 
-```shell
-docker compose up -d reverse-proxy
-docker compose up -d jaeger
-docker compose up -d mongodb opensearch
-docker compose up -d graylog
+```bash
+docker compose up -d reverse-proxy jaeger graylog
 curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
 docker compose up -d caching database
 ```
 
-### 🛠 CI/CD Build
+Após os conteiners acima terem subido, para subir os conteiners dos microsserviços, basta executar o docker compose up para cada uma:
+
+```bash
+docker compose up -d election-management
+docker compose up -d voting-app
+docker compose up -d result-app
+```
+
+_As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml]._
+
+## 🎁 CI/CD
+
+### ✅ CI/CD Build
 Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação, abaixo existe os comandos para build das três aplicações:
 O script para CI/CD Build está no arquivo [cicd-build.sh]
 
@@ -92,8 +110,14 @@ O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-depl
 ./cicd-blue-green-deployment.sh result-app 1.0.0
 ```
 
-_Lembre-se de revisar a versão (TAG) que vem após o nome da aplicação._ 
+_Lembre-se de antes de executar o deployment, revisar a versão (TAG) que vem após o nome da aplicação._ 
 
+## 👨‍💻 Utilizando os recursos
+
+### 👀 Logs
+Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,
+como executar pode ser visto em _Docker Compose_ de _Iniciando as aplicações_.  
+Para acessar os logs pelo navegador utilize: http://logging.private.dio.localhost.
 
 
 [dio.me]: https://www.dio.me/
