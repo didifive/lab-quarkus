@@ -47,6 +47,7 @@ Algumas mudanças e atualizações que fiz em relação com o projeto original:
 - No arquivo [cicd-build.sh] foi adicionado comando para fazer com que o script atualize a
 versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
 o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
+- Uso de assertAll para encapsular série de assertEquals.
 
 
 ## 🎯 Aplicações
@@ -100,7 +101,7 @@ _As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] 
 Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação, abaixo existe os comandos para build das três aplicações:
 O script para CI/CD Build está no arquivo [cicd-build.sh]
 
-```shell
+```bash
 ./cicd-build.sh election-management
 ./cicd-build.sh voting-app
 ./cicd-build.sh result-app
@@ -109,7 +110,7 @@ O script para CI/CD Build está no arquivo [cicd-build.sh]
 ### 🤖 CI/CD Blue Green Deployment
 Com o comando para CI/CD Build, o script já cria a imagem do docker com a versão como TAG. Para realizar um blue green deployment, utilize os comandos abaixo conforme a aplicação:
 O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-deployment.sh]
-```shell
+```bash
 ./cicd-blue-green-deployment.sh election-management 1.0.0
 ./cicd-blue-green-deployment.sh voting-app 1.0.0
 ./cicd-blue-green-deployment.sh result-app 1.0.0
@@ -118,6 +119,30 @@ O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-depl
 _Lembre-se de antes de executar o deployment, revisar a versão (TAG) que vem após o nome da aplicação._ 
 
 ## 👨‍💻 Utilizando o sistema e recursos
+
+### 📝 DEV
+Para executar a aplicação localmente em modo de dev, entre na pasta da aplicação e utilize o comando no terminal:
+```bash
+quarkus dev
+```
+Após a aplicação carregar pode-se acessar o painel Dev UI do Quarkus pelo link: http://localhost:8080/q/dev/  
+Quando a aplicação carrega aparece a seguinte mensagem de "Tests paused":  
+![Quarkus Dev Live Reload](docs/quarkus-dev-testspaused.PNG "Quarkus Dev Test Paused")  
+Para ativar os testes é só teclar o "r". No modo DEV o Quarkus faz uso de Live Reload, ou seja, conforme estiver
+editando o código o Quarkus irá recarregar e refazer os testes praticamente em tempo real.  
+Para ativar o Live reload basta teclar "l" que será mostrado se o recurso foi habilitado ou desabilitado.  
+![Quarkus Dev Live Reload](docs/quarkus-dev-livereload.PNG "Quarkus Dev Live Reload")  
+Observação: Quando algum teste ou funcionalidade não estiver respondendo como esperado basta reiniciar teclando "s" 
+para forçar a reinicialização ou então teclar "q" para sair e executar o comando `quarkus dev` novamente.
+
+#### 🔣 Swagger
+Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8080/q/swagger-ui/
+
+### ✔️ Testes de Integração
+Para executar testes de integração, utilizar o comando abaixo:
+```bash
+./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
+```
 
 ### 👀 Logs
 Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,

@@ -4,20 +4,22 @@ import domain.Candidate;
 
 import java.util.Optional;
 
-public record CreateCandidate(Optional<String> photo,
-        String givenName,
-        String familyName,
-        String email,
-        Optional<String> phone,
-        Optional<String> jobtitle) {
+public record UpdateCandidate(Optional<String> photo,
+                              String givenName,
+                              String familyName,
+                              String email,
+                              Optional<String> phone,
+                              Optional<String> jobTitle) {
 
-    public Candidate toDomain() {
-        return Candidate.create(
-                photo().orElse(null),
+    public Candidate toDomain(String id) {
+        return new Candidate(
+                id,
+                photo(),
                 givenName(),
                 familyName(),
                 email(),
-                phone().orElse(null),
-                jobtitle().orElse(null));
+                phone(),
+                jobTitle()
+        );
     }
 }
