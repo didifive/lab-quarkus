@@ -76,7 +76,7 @@ Readme do [Result App]
 Para iniciar as aplicações, antes é importante subir primeira os containers abaixo para montar a infraestrutura, seguem abaixo os comandos a serem executados:
 
 ```bash
-docker compose up -d graylog
+docker compose up -d reverse-proxy jaeger graylog
 docker compose up -d caching database
 ```
 
@@ -145,7 +145,7 @@ Para executar testes de integração, utilizar o comando abaixo:
 ./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
 ```
 
-### Postman
+### 📚 Postman
 Neste projeto foi adicionado coleção de Postman para se fazer conexões às APIs.  
 O arquivo da coleção está em `postman/Election System.postman_collection.json`
 
@@ -153,7 +153,17 @@ O arquivo da coleção está em `postman/Election System.postman_collection.json
 Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,
 como executar pode ser visto em _Docker Compose_ de _Iniciando as aplicações_.  
 Para acessar os logs pelo navegador utilize: http://logging.private.dio.localhost.
+![Logging with Graylog](docs/graylog.PNG "Logging with Graylog")
+Login padrão:
+- Usuário: admin
+- Senha: admin
 
+### 🔢 Telemetry
+Para acessar os logs pelo navegador utilize: http://telemetry.private.dio.localhost.
+![Telemetry with Jaeger UI](docs/jaeger-ui.PNG "Telemetry with Jaeger UI")
+Login padrão:
+- Usuário: admin
+- Senha: admin
 
 [dio.me]: https://www.dio.me/
 [Thiago Poiani]: https://github.com/thpoiani/

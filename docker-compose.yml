@@ -36,6 +36,10 @@ services:
       - traefik.http.routers.election-management.rule=Host(`vote.dio.localhost`) && PathPrefix(`/api`)
       - traefik.http.routers.election-management.entrypoints=web
     depends_on:
+      reverse-proxy:
+        condition: service_started
+      jaeger:
+        condition: service_started
       graylog:
         condition: service_started
       database:
@@ -120,10 +124,6 @@ services:
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch:9200"
       GRAYLOG_MONGODB_URI: "mongodb://mongodb:27017/graylog"
     depends_on:
-      reverse-proxy:
-        condition: service_started
-      jaeger:
-        condition: service_started
       opensearch:
         condition: service_started
       mongodb:
