@@ -35,6 +35,11 @@ services:
     labels:
       - traefik.http.routers.election-management.rule=Host(`vote.dio.localhost`) && PathPrefix(`/api`)
       - traefik.http.routers.election-management.entrypoints=web
+    depends_on:
+      graylog:
+        condition: service_started
+      database:
+        condition: service_started
 
   voting-app:
     extends:
@@ -48,6 +53,9 @@ services:
     labels:
       - traefik.http.routers.voting-app.rule=Host(`vote.dio.localhost`) && PathPrefix(`/api/voting`)
       - traefik.http.routers.voting-app.entrypoints=web
+    depends_on:
+      graylog:
+        condition: service_started
 
   result-app:
     extends:
@@ -61,6 +69,9 @@ services:
     labels:
       - traefik.http.routers.result-app.rule=Host(`vote.dio.localhost`) && Path(`/`)
       - traefik.http.routers.result-app.entrypoints=web
+    depends_on:
+      graylog:
+        condition: service_started
 
   # DATABASE - https://quarkus.io/guides/datasource
 
@@ -109,10 +120,15 @@ services:
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch:9200"
       GRAYLOG_MONGODB_URI: "mongodb://mongodb:27017/graylog"
     depends_on:
+      reverse-proxy:
+        condition: service_started
+      jaeger:
+        condition: service_started
       opensearch:
         condition: service_started
       mongodb:
         condition: service_started
+
     labels:
       - traefik.enable=true
       - traefik.http.routers.graylog.rule=Host(`logging.private.dio.localhost`)

@@ -75,7 +75,7 @@ Readme do [Result App]
 Para iniciar as aplicações, antes é importante subir primeira os containers abaixo para montar a infraestrutura, seguem abaixo os comandos a serem executados:
 
 ```bash
-docker compose up -d reverse-proxy jaeger graylog
+docker compose up -d graylog
 docker compose up -d caching database
 ```
 
