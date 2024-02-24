@@ -43,10 +43,10 @@ Projeto de laboratório da [dio.me] com o especialista [Thiago Poiani]
 
 Algumas mudanças e atualizações que fiz em relação com o projeto original:
 
+- Banner personalizado do quarkus: ![Quarkus Banner](docs/banner.PNG "Quarkus Banner")
 - No arquivo [cicd-build.sh] foi adicionado comando para fazer com que o script atualize a
 versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
 o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
-- **_TODO: Utilizar Vault para remover secrets que estão explícitas no docker compose._**
 
 
 ## 🎯 Aplicações
@@ -75,11 +75,16 @@ Para iniciar as aplicações, antes é importante subir primeira os containers a
 
 ```bash
 docker compose up -d reverse-proxy jaeger graylog
-curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
 docker compose up -d caching database
 ```
 
-Após os conteiners acima terem subido, para subir os conteiners dos microsserviços, basta executar o docker compose up para cada uma:
+Após o graylog subir, para configurá-lo para protocolo UDP, pode-se usar o comando abaixo ou fazer a requisição com os parâmetros, por exemplo, via postman:
+```bash
+curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
+```
+_Esta configuração é necessária somente uma vez_  
+
+Após os conteiners acima terem subido e ter enviado a requisição de configuraçãode UDP para o graylog, para subir os conteiners dos microsserviços, basta executar o docker compose up para cada uma:
 
 ```bash
 docker compose up -d election-management
@@ -112,7 +117,7 @@ O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-depl
 
 _Lembre-se de antes de executar o deployment, revisar a versão (TAG) que vem após o nome da aplicação._ 
 
-## 👨‍💻 Utilizando os recursos
+## 👨‍💻 Utilizando o sistema e recursos
 
 ### 👀 Logs
 Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,
