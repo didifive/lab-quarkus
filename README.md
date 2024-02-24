@@ -48,6 +48,7 @@ Algumas mudanças e atualizações que fiz em relação com o projeto original:
 versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
 o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
 - Uso de assertAll para encapsular série de assertEquals.
+- Criação de Coleção do Postman para fazer requisições aos endpoints
 
 
 ## 🎯 Aplicações
@@ -143,6 +144,10 @@ Para executar testes de integração, utilizar o comando abaixo:
 ```bash
 ./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
 ```
+
+### Postman
+Neste projeto foi adicionado coleção de Postman para se fazer conexões às APIs.  
+O arquivo da coleção está em `postman/Election System.postman_collection.json`
 
 ### 👀 Logs
 Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,
