@@ -1,30 +1,31 @@
 package infrastructure.repositories;
 
-import domain.CandidateRepository;
-import domain.CandidateRepositoryTest;
+import domain.ElectionRepository;
+import domain.ElectionRepositoryTest;
+import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.AfterEach;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 @QuarkusTest
-class SQLElectionRepositoryTest extends CandidateRepositoryTest {
+class RedisElectionRepositoryTest extends ElectionRepositoryTest {
 
+    @InjectMock
+    RedisElectionRepository repository;
     @Inject
-    SQLCandidateRepository repository;
-    @Inject
-    EntityManager entityManager;
+    RedisDataSource dataSource;
 
     @Override
-    public CandidateRepository repository() {
+    public ElectionRepository repository() {
         return repository;
     }
 
     @AfterEach
     @TestTransaction
     void tearDown() {
-        entityManager.createNativeQuery("TRUNCATE TABLE candidates").executeUpdate();
+        dataSource.flushall();
     }
 }

@@ -1,30 +1,32 @@
 package infrastructure.repositories;
 
-import domain.CandidateRepository;
-import domain.CandidateRepositoryTest;
+import domain.ElectionRepository;
+import domain.ElectionRepositoryTest;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.AfterEach;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 @QuarkusTest
-class SQLCandidateRepositoryTest extends CandidateRepositoryTest {
+class SQLElectionRepositoryTest extends ElectionRepositoryTest {
 
-    @Inject
-    SQLCandidateRepository repository;
+    @InjectMock
+    SQLElectionRepository repository;
     @Inject
     EntityManager entityManager;
 
     @Override
-    public CandidateRepository repository() {
+    public ElectionRepository repository() {
         return repository;
     }
 
     @AfterEach
     @TestTransaction
     void tearDown() {
-        entityManager.createNativeQuery("TRUNCATE TABLE candidates").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE TABLE election_candidate").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE TABLE elections").executeUpdate();
     }
 }

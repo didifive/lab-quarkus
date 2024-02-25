@@ -1,75 +1,41 @@
 package domain;
 
+import infrastructure.repositories.RedisElectionRepository;
+import infrastructure.repositories.SQLElectionRepository;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
+import io.quarkus.test.junit.mockito.InjectSpy;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
-class CandidateServiceTest {
+class ElectionServiceTest {
     @Inject
-    CandidateService service;
+    ElectionService service;
 
     @InjectMock
-    CandidateRepository repository;
+    CandidateService candidateService;
+
+    @InjectMock
+    RedisElectionRepository redisElectionRepository;
+
+    @InjectMock
+    SQLElectionRepository sqlElectionRepository;
 
     @Test
-    void save(){
-        Candidate candidate = Instancio.create(Candidate.class);
+    void submit(){
+        when(candidateService.findAll()).thenReturn(Instancio.stream(Candidate.class).limit(10).toList());
 
-        service.save(candidate);
+        service.submit();
 
-        verify(repository).save(candidate);
-        verifyNoMoreInteractions(repository);
+        verify(redisElectionRepository).submit(any(Election.class));
+        verify(sqlElectionRepository).submit(any(Election.class));
+        verifyNoMoreInteractions(redisElectionRepository);
+        verifyNoMoreInteractions(sqlElectionRepository);
     }
-
-    @Test
-    void findAll() {
-        List<Candidate> candidates = Instancio.stream(Candidate.class).limit(10).toList();
-
-        when(repository.findAll()).thenReturn(candidates);
-
-        List<Candidate> result = service.findAll();
-
-        verify(repository).findAll();
-        verifyNoMoreInteractions(repository);
-
-        assertEquals(candidates, result);
-    }
-
-    @Test
-    void findById_whenCandidateIsFound_returnsCandidate() {
-        Candidate candidate = Instancio.create(Candidate.class);
-
-        when(repository.findById(candidate.id())).thenReturn(Optional.of(candidate));
-
-        Candidate result = service.findById(candidate.id());
-
-        verify(repository).findById(candidate.id());
-        verifyNoMoreInteractions(repository);
-
-        assertEquals(candidate, result);
-    }
-
-    @Test
-    void findById_whenCandidateIsNotFound_throwsException() {
-        Candidate candidate = Instancio.create(Candidate.class);
-
-        when(repository.findById(candidate.id())).thenReturn(Optional.empty());
-
-        assertThrows(NoSuchElementException.class, () -> service.findById(candidate.id()));
-
-
-    }
-
 }

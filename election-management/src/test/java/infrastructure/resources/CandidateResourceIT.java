@@ -14,8 +14,7 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestHTTPEndpoint(CandidateResource.class)
@@ -51,10 +50,12 @@ class CandidateResourceIT {
                 .when().put("/" + id)
                 .then().statusCode(RestResponse.StatusCode.OK).extract().as(Candidate.class);
 
-        assertEquals(response1.id(), id);
-        assertEquals(response2.id(), id);
-        assertNotEquals(response1.fullName(), response2.fullName());
-        assertEquals(response1.email(), response2.email());
-        assertEquals(response1.phone(), response2.phone());
+        assertAll("Only fullname not equals",
+                () -> assertEquals(response1.id(), id),
+                () -> assertEquals(response2.id(), id),
+                () -> assertNotEquals(response1.fullName(), response2.fullName()),
+                () -> assertEquals(response1.email(), response2.email()),
+                () -> assertEquals(response1.phone(), response2.phone())
+        );
     }
 }
