@@ -4,7 +4,7 @@
 
 O objetivo deste projeto é criar um sistema distribuído e escalável para eleições, 
 contendo aplicações responsáveis para votação, gerenciamento de eleição, 
-e consulta de resultados utilizando Java, Docker, MariaDB, Quarkus e Arquitetura Limpa.
+e consulta de resultados utilizando Java, Docker, MariaDB, Quarkus e Arquitetura Cebola.
 
 Este projeto conta com 3 módulos:
 - [Election Management]
@@ -39,6 +39,18 @@ Projeto de laboratório da [dio.me] com o especialista [Thiago Poiani]
   - [MongoDB]
   - [Jaeger Tracing]
 
+## 🛠️ Mudanças e Atualizações
+
+Algumas mudanças e atualizações que fiz em relação com o projeto original:
+
+- Banner personalizado do quarkus: ![Quarkus Banner](docs/banner.PNG "Quarkus Banner")
+- No arquivo [cicd-build.sh] foi adicionado comando para fazer com que o script atualize a
+versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
+o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
+- Uso de assertAll para encapsular série de assertEquals.
+- Criação de Coleção do Postman para fazer requisições aos endpoints
+
+
 ## 🎯 Aplicações
 
 ### ⚙ Election Management
@@ -58,26 +70,39 @@ A aplicação Result App encontra-se na pasta `result-app`.
 Readme do [Result App]
 
 
-## 👨‍💻 Iniciar as aplicações deste projeto
+## 🚀 Iniciando as aplicações
 
 ### 📦 Docker Compose
-Antes de inicar os módulos, é importante subir os containers e executar XXXX, seguem abaixo os comandos a serem executados:
-As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml].
+Para iniciar as aplicações, antes é importante subir primeira os containers abaixo para montar a infraestrutura, seguem abaixo os comandos a serem executados:
 
-```shell
-docker compose up -d reverse-proxy
-docker compose up -d jaeger
-docker compose up -d mongodb opensearch
-docker compose up -d graylog
-curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
+```bash
+docker compose up -d reverse-proxy jaeger graylog
 docker compose up -d caching database
 ```
 
-### 🛠 CI/CD Build
+Após o graylog subir, para configurá-lo para protocolo UDP, pode-se usar o comando abaixo ou fazer a requisição com os parâmetros, por exemplo, via postman:
+```bash
+curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
+```
+_Esta configuração é necessária somente uma vez_  
+
+Após os conteiners acima terem subido e ter enviado a requisição de configuraçãode UDP para o graylog, para subir os conteiners dos microsserviços, basta executar o docker compose up para cada uma:
+
+```bash
+docker compose up -d election-management
+docker compose up -d voting-app
+docker compose up -d result-app
+```
+
+_As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml]._
+
+## 🎁 CI/CD
+
+### ✅ CI/CD Build
 Para as aplicações desenvolvidas, primeiro criar o build para cada aplicação, abaixo existe os comandos para build das três aplicações:
 O script para CI/CD Build está no arquivo [cicd-build.sh]
 
-```shell
+```bash
 ./cicd-build.sh election-management
 ./cicd-build.sh voting-app
 ./cicd-build.sh result-app
@@ -86,15 +111,59 @@ O script para CI/CD Build está no arquivo [cicd-build.sh]
 ### 🤖 CI/CD Blue Green Deployment
 Com o comando para CI/CD Build, o script já cria a imagem do docker com a versão como TAG. Para realizar um blue green deployment, utilize os comandos abaixo conforme a aplicação:
 O script para CI/CD Blue Green Deployment está no arquivo [cicd-blue-green-deployment.sh]
-```shell
+```bash
 ./cicd-blue-green-deployment.sh election-management 1.0.0
 ./cicd-blue-green-deployment.sh voting-app 1.0.0
 ./cicd-blue-green-deployment.sh result-app 1.0.0
 ```
 
-_Lembre-se de revisar a versão (TAG) que vem após o nome da aplicação._ 
+_Lembre-se de antes de executar o deployment, revisar a versão (TAG) que vem após o nome da aplicação._ 
 
+## 👨‍💻 Utilizando o sistema e recursos
 
+### 📝 DEV
+Para executar a aplicação localmente em modo de dev, entre na pasta da aplicação e utilize o comando no terminal:
+```bash
+quarkus dev
+```
+Após a aplicação carregar pode-se acessar o painel Dev UI do Quarkus pelo link: http://localhost:8080/q/dev/  
+Quando a aplicação carrega aparece a seguinte mensagem de "Tests paused":  
+![Quarkus Dev Live Reload](docs/quarkus-dev-testspaused.PNG "Quarkus Dev Test Paused")  
+Para ativar os testes é só teclar o "r". No modo DEV o Quarkus faz uso de Live Reload, ou seja, conforme estiver
+editando o código o Quarkus irá recarregar e refazer os testes praticamente em tempo real.  
+Para ativar o Live reload basta teclar "l" que será mostrado se o recurso foi habilitado ou desabilitado.  
+![Quarkus Dev Live Reload](docs/quarkus-dev-livereload.PNG "Quarkus Dev Live Reload")  
+Observação: Quando algum teste ou funcionalidade não estiver respondendo como esperado basta reiniciar teclando "s" 
+para forçar a reinicialização ou então teclar "q" para sair e executar o comando `quarkus dev` novamente.
+
+#### 🔣 Swagger
+Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8080/q/swagger-ui/
+
+### ✔️ Testes de Integração
+Para executar testes de integração, utilizar o comando abaixo:
+```bash
+./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
+```
+
+### 📚 Postman
+Neste projeto foi adicionado coleção de Postman para se fazer conexões às APIs.  
+O arquivo da coleção está em `postman/Election System.postman_collection.json`
+
+### 👀 Logs
+Antes de mais nada, para existir e poder acessar os logs é importante ter o graylog em execução,
+como executar pode ser visto em _Docker Compose_ de _Iniciando as aplicações_.  
+Para acessar os logs pelo navegador utilize: http://logging.private.dio.localhost.
+![Logging with Graylog](docs/graylog.PNG "Logging with Graylog")
+Login padrão:
+- Usuário: admin
+- Senha: admin
+
+### 🔢 Telemetria
+Para acessar os logs pelo navegador utilize: http://telemetry.private.dio.localhost.
+![Telemetry with Jaeger UI](docs/jaeger-ui.PNG "Telemetry with Jaeger UI")
+Login padrão:
+- Usuário: admin
+- Senha: admin
 
 [dio.me]: https://www.dio.me/
 [Thiago Poiani]: https://github.com/thpoiani/

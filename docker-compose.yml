@@ -27,10 +27,26 @@ services:
       context: ./election-management
       # dockerfile: src/main/docker/Dockerfile.native
       dockerfile: src/main/docker/Dockerfile.jvm
-    image: dio/election-management:${TAG:-1.0.0}
+    image: dio/election-management:${TAG:-1.0.20}
+    environment:
+      - QUARKUS_DATASOURCE_USERNAME=election-management-user
+      - QUARKUS_DATASOURCE_PASSWORD=election-management-password
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:otel:mariadb://database:3306/election-management
+      - QUARKUS_REDIS_HOSTS=redis://caching:6379
     labels:
       - traefik.http.routers.election-management.rule=Host(`vote.dio.localhost`) && PathPrefix(`/api`)
       - traefik.http.routers.election-management.entrypoints=web
+    depends_on:
+      reverse-proxy:
+        condition: service_started
+      jaeger:
+        condition: service_started
+      graylog:
+        condition: service_started
+      database:
+        condition: service_started
+      caching:
+        condition: service_started
 
   voting-app:
     extends:
@@ -44,6 +60,9 @@ services:
     labels:
       - traefik.http.routers.voting-app.rule=Host(`vote.dio.localhost`) && PathPrefix(`/api/voting`)
       - traefik.http.routers.voting-app.entrypoints=web
+    depends_on:
+      graylog:
+        condition: service_started
 
   result-app:
     extends:
@@ -57,6 +76,9 @@ services:
     labels:
       - traefik.http.routers.result-app.rule=Host(`vote.dio.localhost`) && Path(`/`)
       - traefik.http.routers.result-app.entrypoints=web
+    depends_on:
+      graylog:
+        condition: service_started
 
   # DATABASE - https://quarkus.io/guides/datasource
 
@@ -64,6 +86,9 @@ services:
   database:
     image: mariadb:10.11.2
     environment:
+      - MARIADB_USER=election-management-user
+      - MARIADB_PASSWORD=election-management-password
+      - MARIADB_DATABASE=election-management
       - MARIADB_ROOT_PASSWORD=root
 
   # CACHING - https://quarkus.io/guides/redis
@@ -106,6 +131,7 @@ services:
         condition: service_started
       mongodb:
         condition: service_started
+
     labels:
       - traefik.enable=true
       - traefik.http.routers.graylog.rule=Host(`logging.private.dio.localhost`)
