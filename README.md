@@ -158,7 +158,7 @@ Login padrão:
 - Usuário: admin
 - Senha: admin
 
-### 🔢 Telemetry
+### 🔢 Telemetria
 Para acessar os logs pelo navegador utilize: http://telemetry.private.dio.localhost.
 ![Telemetry with Jaeger UI](docs/jaeger-ui.PNG "Telemetry with Jaeger UI")
 Login padrão:
