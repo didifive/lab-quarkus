@@ -102,6 +102,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Election",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/elections",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"elections"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
