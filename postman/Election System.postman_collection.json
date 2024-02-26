@@ -127,6 +127,70 @@
 			]
 		},
 		{
+			"name": "VotingApp",
+			"item": [
+				{
+					"name": "ListElections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"electionToVote\", jsonData[0].id);\r",
+									"pm.collectionVariables.set(\"candidateToVote\", jsonData[0].candidates[0]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/voting",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"voting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/voting/elections/{{electionToVote}}/candidates/{{candidateToVote}}",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"voting",
+								"elections",
+								"{{electionToVote}}",
+								"candidates",
+								"{{candidateToVote}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "graylog-config",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
@@ -200,6 +264,16 @@
 	"variable": [
 		{
 			"key": "candidateId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "electionToVote",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "candidateToVote",
 			"value": "",
 			"type": "string"
 		}
