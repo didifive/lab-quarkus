@@ -48,7 +48,9 @@ Algumas mudanças e atualizações que fiz em relação com o projeto original:
 versão da aplicação no arquivo [docker-compose.yml], assim quando for utilizar 
 o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
 - Uso de assertAll para encapsular série de assertEquals.
-- Criação de Coleção do Postman para fazer requisições aos endpoints
+- Criação de Coleção do Postman para fazer requisições aos endpoints.
+- Criado mais testes unitários para Voting App e adição do Jacoco para relatório de coverage:
+  - Voting App: ![Jacoco Report Voting App](docs/jacoco-voting-app.PNG "Jacoco Report Voting App")
 
 
 ## 🎯 Aplicações
@@ -139,11 +141,14 @@ para forçar a reinicialização ou então teclar "q" para sair e executar o com
 #### 🔣 Swagger
 Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8080/q/swagger-ui/
 
-### ✔️ Testes de Integração
-Para executar testes de integração, utilizar o comando abaixo:
+### ✔️ Testes
+Para executar testes unitários e os testes de integração, dentro da pasta do projeto que deseja testar, utilizar o comando abaixo:
 ```bash
 ./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
 ```
+Para checar o coverage, dentro da pasta do projeto, procure pelo arquivo `target\jacoco-report\index.html`.  
+Abaixo exemplo do Jacoco Report para o Voting Api:  
+![Jacoco Report Voting App](docs/jacoco-voting-app.PNG "Jacoco Report Voting App")
 
 ### 📚 Postman
 Neste projeto foi adicionado coleção de Postman para se fazer conexões às APIs.  
