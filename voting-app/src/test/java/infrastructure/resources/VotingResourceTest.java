@@ -26,19 +26,19 @@ class VotingResourceTest {
 
     @Test
     void candidates() {
-//        var out = Instancio.stream(api.dto.out.Election.class).limit(4).toList();
-//
-//        when(api.findAll()).thenReturn(out);
-//
-//        var response = given()
-//                .when().get()
-//                .then().statusCode(RestResponse.StatusCode.OK)
-//                .extract().as(api.dto.out.Election[].class);
-//
-//        verify(api).findAll();
-//        verifyNoMoreInteractions(api);
-//
-//        assertEquals(out, Arrays.stream(response).toList());
+        var out = Instancio.stream(api.dto.out.Election.class).limit(4).toList();
+
+        when(api.findAll()).thenReturn(out);
+
+        var response = given()
+                .when().get()
+                .then().statusCode(RestResponse.StatusCode.OK)
+                .extract().as(api.dto.out.Election[].class);
+
+        verify(api).findAll();
+        verifyNoMoreInteractions(api);
+
+        assertEquals(out, Arrays.stream(response).toList());
     }
 
     @Test

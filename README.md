@@ -140,7 +140,7 @@ para forçar a reinicialização ou então teclar "q" para sair e executar o com
 Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8080/q/swagger-ui/
 
 ### ✔️ Testes de Integração
-Para executar testes de integração, utilizar o comando abaixo:
+Para executar testes de integração, dentro da pasta do projeto que deseja testar, utilizar o comando abaixo:
 ```bash
 ./mvnw verify -DskipITs=false -Dquarkus.log.handler.gelf.enabled=false -Dquarkus.opentelemetry.enable=false -Dquarkus.datasource.jdbc.driver=org.mariadb.jdbc.Driver
 ```
