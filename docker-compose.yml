@@ -56,7 +56,7 @@ services:
       context: ./voting-app
       # dockerfile: src/main/docker/Dockerfile.native
       dockerfile: src/main/docker/Dockerfile.jvm
-    image: dio/voting-app:${TAG:-1.0.2}
+    image: dio/voting-app:${TAG:-1.1.0}
     environment:
       - QUARKUS_REDIS_HOSTS=redis://caching:6379
     labels:
@@ -81,10 +81,18 @@ services:
       # dockerfile: src/main/docker/Dockerfile.native
       dockerfile: src/main/docker/Dockerfile.jvm
     image: dio/result-app:${TAG:-1.0.0}
+    environment:
+      - QUARKUS_REST_CLIENT_ELECTION_MANAGEMENT_URL=http://election-management:8080
     labels:
+      - traefik.http.middlewares.headers.headers.accesscontrolalloworiginlist=*
       - traefik.http.routers.result-app.rule=Host(`vote.dio.localhost`) && Path(`/`)
       - traefik.http.routers.result-app.entrypoints=web
+      - traefik.http.routers.result-app.middlewares=headers
     depends_on:
+      reverse-proxy:
+        condition: service_started
+      jaeger:
+        condition: service_started
       graylog:
         condition: service_started
 
