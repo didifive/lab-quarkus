@@ -123,11 +123,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "List Elections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/elections",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"elections"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "VotingApp",
+			"name": "Voting App",
 			"item": [
 				{
 					"name": "ListElections",
@@ -183,6 +204,31 @@
 								"{{electionToVote}}",
 								"candidates",
 								"{{candidateToVote}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Result App",
+			"item": [
+				{
+					"name": "Get Results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								""
 							]
 						}
 					},
