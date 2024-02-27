@@ -161,11 +161,15 @@ Login padrão:
 - Senha: admin
 
 ### 🔢 Telemetria
-Para acessar os logs pelo navegador utilize: http://telemetry.private.dio.localhost.
+Para acessar a telemetria coletada, no navegador utilize a url: http://telemetry.private.dio.localhost.
 ![Telemetry with Jaeger UI](docs/jaeger-ui.PNG "Telemetry with Jaeger UI")
 Login padrão:
 - Usuário: admin
 - Senha: admin
+
+###  Traefik
+Para acessar dashboard do Traefik no navegador utilize: http://localhost:8080/
+![Traefik Dashboard](docs/traefik.PNG "Traefik Dashboard")
 
 [dio.me]: https://www.dio.me/
 [Thiago Poiani]: https://github.com/thpoiani/

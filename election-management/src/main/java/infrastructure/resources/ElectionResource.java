@@ -1,6 +1,5 @@
 package infrastructure.resources;
 
-
 import api.ElectionApi;
 import api.dto.out.Election;
 import org.jboss.resteasy.reactive.ResponseStatus;
