@@ -49,7 +49,8 @@ versão da aplicação no arquivo [docker-compose.yml], assim quando for utiliza
 o comando docker compose up de uma das aplicações, já irá utilizar a TAG referente à última versão.
 - Uso de assertAll para encapsular série de assertEquals.
 - Criação de Coleção do Postman para fazer requisições aos endpoints.
-- Criado mais testes unitários para Voting App e adição do Jacoco para relatório de coverage:
+- Criado mais testes para Election Management e Voting App e adição do Jacoco para relatório de coverage:
+  - Election Management: ![Jacoco Report Election Management](docs/jacoco-election-management.PNG "Jacoco Report Election Management")
   - Voting App: ![Jacoco Report Voting App](docs/jacoco-voting-app.PNG "Jacoco Report Voting App")
 
 

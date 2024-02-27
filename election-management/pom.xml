@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.dio</groupId>
   <artifactId>election-management</artifactId>
-  <version>1.0.21-SNAPSHOT</version>
+  <version>1.0.22-SNAPSHOT</version>
   <properties>
     <byte-buddy.version>1.14.12</byte-buddy.version>
     <compiler-plugin.version>3.10.1</compiler-plugin.version>
@@ -92,6 +92,10 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-scheduler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -125,6 +129,11 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jacoco</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

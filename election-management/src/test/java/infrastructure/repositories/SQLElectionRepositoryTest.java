@@ -4,7 +4,7 @@ import domain.ElectionRepository;
 import domain.ElectionRepositoryTest;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
+import io.quarkus.test.junit.mockito.InjectSpy;
 import org.junit.jupiter.api.AfterEach;
 
 import javax.inject.Inject;
@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 @QuarkusTest
 class SQLElectionRepositoryTest extends ElectionRepositoryTest {
 
-    @InjectMock
+    @InjectSpy
     SQLElectionRepository repository;
     @Inject
     EntityManager entityManager;
