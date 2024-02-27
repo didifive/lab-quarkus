@@ -1,8 +1,10 @@
 package api;
 
+import api.dto.out.Election;
 import domain.ElectionService;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
 @ApplicationScoped
 public class ElectionApi {
@@ -14,5 +16,12 @@ public class ElectionApi {
 
     public void submit() {
         service.submit();
+    }
+
+    public List<Election> findAll() {
+        return service.findAll()
+                .stream()
+                .map(Election::fromDomain)
+                .toList();
     }
 }
