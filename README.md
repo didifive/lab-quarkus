@@ -87,17 +87,7 @@ Após o graylog subir, para configurá-lo para protocolo UDP, pode-se usar o com
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "X-Requested-By: curl" -X POST -v -d '{"title":"udp input","configuration":{"recv_buffer_size":262144,"bind_address":"0.0.0.0","port":12201,"decompress_size_limit":8388608},"type":"org.graylog2.inputs.gelf.udp.GELFUDPInput","global":true}' http://logging.private.dio.localhost/api/system/inputs
 ```
-_Esta configuração é necessária somente uma vez_  
-
-Após os conteiners acima terem subido e ter enviado a requisição de configuraçãode UDP para o graylog, para subir os conteiners dos microsserviços, basta executar o docker compose up para cada uma:
-
-```bash
-docker compose up -d election-management
-docker compose up -d voting-app
-docker compose up -d result-app
-```
-
-_As instruções para o Docker Compose estão nos arquivos [docker-compose.yml] e [common.yml]._
+_Esta configuração para o graylog é necessária somente uma vez._  
 
 ## 🎁 CI/CD
 
@@ -129,18 +119,24 @@ Para executar a aplicação localmente em modo de dev, entre na pasta da aplica�
 ```bash
 quarkus dev
 ```
-Após a aplicação carregar pode-se acessar o painel Dev UI do Quarkus pelo link: http://localhost:8080/q/dev/  
+Após a aplicação carregar pode-se acessar o painel Dev UI do Quarkus pelo link: http://localhost:8091/q/dev/  
+_Atenção para a porta, cada aplicação tem uma definida para execução de dev (para não conflitar com o container do proxy reverso), sendo:_
+  - _Porta 8091 para election-management_
+  - _Porta 8092 para voting-app_
+  - _Porta 8093 para result-app_
+
 Quando a aplicação carrega aparece a seguinte mensagem de "Tests paused":  
 ![Quarkus Dev Live Reload](docs/quarkus-dev-testspaused.PNG "Quarkus Dev Test Paused")  
 Para ativar os testes é só teclar o "r". No modo DEV o Quarkus faz uso de Live Reload, ou seja, conforme estiver
 editando o código o Quarkus irá recarregar e refazer os testes praticamente em tempo real.  
 Para ativar o Live reload basta teclar "l" que será mostrado se o recurso foi habilitado ou desabilitado.  
 ![Quarkus Dev Live Reload](docs/quarkus-dev-livereload.PNG "Quarkus Dev Live Reload")  
-Observação: Quando algum teste ou funcionalidade não estiver respondendo como esperado basta reiniciar teclando "s" 
-para forçar a reinicialização ou então teclar "q" para sair e executar o comando `quarkus dev` novamente.
+_Observação: Quando algum teste ou funcionalidade não estiver respondendo como esperado basta reiniciar teclando "s" 
+para forçar a reinicialização ou então teclar "q" para sair e executar o comando `quarkus dev` novamente._
 
 #### 🔣 Swagger
-Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8080/q/swagger-ui/
+Quando a aplicação estiver em execução com `quarkus dev` para acessar o Swagger é só abrir o link: http://localhost:8091/q/swagger-ui/ 
+_Lembre-se que cada aplicação tem sua respectiva porta conforme descrito anteriormente ou consultando o `application.properties` de cada uma_
 
 ### ✔️ Testes
 Para executar testes unitários e os testes de integração, dentro da pasta do projeto que deseja testar, utilizar o comando abaixo:

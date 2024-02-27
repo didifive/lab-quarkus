@@ -1,5 +1,6 @@
 package domain;
 
+import domain.annotations.SQL;
 import infrastructure.repositories.RedisElectionRepository;
 import infrastructure.repositories.SQLElectionRepository;
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,6 +26,7 @@ class ElectionServiceTest {
     RedisElectionRepository redisElectionRepository;
 
     @InjectMock
+    @SQL
     SQLElectionRepository sqlElectionRepository;
 
     @Test

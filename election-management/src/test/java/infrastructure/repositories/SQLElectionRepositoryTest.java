@@ -2,6 +2,7 @@ package infrastructure.repositories;
 
 import domain.ElectionRepository;
 import domain.ElectionRepositoryTest;
+import domain.annotations.SQL;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectSpy;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager;
 class SQLElectionRepositoryTest extends ElectionRepositoryTest {
 
     @InjectSpy
+    @SQL
     SQLElectionRepository repository;
     @Inject
     EntityManager entityManager;

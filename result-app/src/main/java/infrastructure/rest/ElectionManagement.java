@@ -1,6 +1,6 @@
 package infrastructure.rest;
 
-import api.dto.in.Election;
+import api.dto.Election;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
